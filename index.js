@@ -70,7 +70,7 @@ async function start() {
 
 // Schedule the message to be sent every 5 minutes
 const job = schedule.scheduleJob('*/5 * * * *', function() {
-  bot.api.sendMessage(1925815386, 'Testing 5 mins send');
+  bot.api.sendMessage(-1001925815386, 'Testing 5 mins send');
 });
 
   console.log("Starting the bot...");
