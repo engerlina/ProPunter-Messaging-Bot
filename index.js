@@ -2,6 +2,7 @@ const { Bot, GrammyError, HttpError } = require("grammy");
 const { autoQuote } = require("@roziscoding/grammy-autoquote");
 const fs = require("fs");
 const path = require("path");
+const schedule = require('node-schedule');
 
 if (fs.existsSync(".env")) {
   require("dotenv").config();
@@ -65,6 +66,11 @@ async function start() {
     console.log("Stopping...");
     bot.stop();
     process.exit(0);
+  });
+
+  // Schedule the message to be sent every hour
+  const job = schedule.scheduleJob('0 * * * *', function() {
+    bot.api.sendMessage(1925815386, 'Test');
   });
 
   console.log("Starting the bot...");
