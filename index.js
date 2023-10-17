@@ -68,10 +68,10 @@ async function start() {
     process.exit(0);
   });
 
-  // Schedule the message to be sent every hour
-  const job = schedule.scheduleJob('0 * * * *', function() {
-    bot.api.sendMessage(1925815386, 'Test');
-  });
+// Schedule the message to be sent every 5 minutes
+const job = schedule.scheduleJob('*/5 * * * *', function() {
+  bot.api.sendMessage(1925815386, 'Testing 5 mins send');
+});
 
   console.log("Starting the bot...");
   await bot.start();
