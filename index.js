@@ -114,10 +114,10 @@ async function start() {
 //  bot.api.sendMessage(-1001925815386, 'Testing 5 mins send');
 //});
 
-  // Schedule the message to be sent daily based on the day of the week
-  const job = schedule.scheduleJob('*/5 * * * *', async function() {
+  // Schedule the message to be sent daily at 8:30AM
+  const job = schedule.scheduleJob('30 8 * * *', async function() {
     const message = await fetchMessageForToday();
-    bot.api.sendMessage(-1001925815386, message);
+    bot.api.sendMessage(-1001874617075, message);
   });
 
   console.log("Starting the bot...");
