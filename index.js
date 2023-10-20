@@ -140,20 +140,23 @@ async function start() {
 
   // In the bot command, capture the message text after the /win command
   bot.command('win', async (ctx) => {
-    console.log(JSON.stringify(ctx, null, 2));  // <-- Add this line to log the ctx object
+    console.log(JSON.stringify(ctx, null, 2));  // Log the entire ctx object
 
     if (ctx.chat.id === -1001925815386) { // Only for the specified channel
-      console.log("CTX:", ctx);
-      console.log("CTX Message:", ctx.message);
 
+        // Check if ctx.message and ctx.message.text are defined
         if (ctx.message && ctx.message.text) {
-            const horseDetails = ctx.message.text.split('/win')[1];
-            const announcement = await announceWinningHorse(horseDetails);
-            await ctx.reply(announcement);
-        } else {
-            const horseDetails = ctx.message.text.split('/win')[1];
-            const announcement = await announceWinningHorse(horseDetails);
-            await ctx.reply(announcement);
+
+            // Check if the message contains /win before splitting
+            if (ctx.message.text.includes('/win')) {
+                const horseDetails = ctx.message.text.split('/win')[1];
+
+                // Just to be safe, check if horseDetails exists
+                if (horseDetails) {
+                    const announcement = await announceWinningHorse(horseDetails);
+                    await ctx.reply(announcement);
+                }
+            }
         }
     }
   });
