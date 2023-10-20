@@ -135,7 +135,8 @@ async function start() {
             // You can add more handling here if needed
         }
     }
-    
+  });
+  
   bot.command('win', async (ctx) => {
     if (ctx.chat.id === -1001925815386) { // Only for the specified channel
         const announcement = await announceWinningHorse();
