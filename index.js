@@ -44,7 +44,7 @@ async function fetchMessageForToday() {
   const today = new Date().toLocaleString('en-US', { weekday: 'long' });
   const todayPrompt = weeklyPrompts[today];
   
-  const openai = new OpenAI(openaiApiKey);
+
 
   const response = await openai.chat.completions.create({
     model: "gpt-4",
