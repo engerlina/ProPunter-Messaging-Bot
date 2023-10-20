@@ -27,6 +27,19 @@ const weeklyPrompts = {
   Sunday: "Day 7 (Sunday): Reflection & Relaxation Tactic: Share aggregate results of Saturday's races and encourage members to gear up for the upcoming week. Example Post: What an exhilarating race day! 🎊 Our tips yielded fantastic results. Check out the full breakdown here: https://bit.ly/propunterresults. Relax and recharge today, and get ready for another week of top-notch tips! 🌟"
 };
 
+async function exponentialBackoff(fn, maxRetries, delay = 1000) {
+  for (let i = 0; i < maxRetries; i++) {
+      try {
+          return await fn(); // try to execute the function
+      } catch (error) {
+          console.error(`Attempt ${i + 1} failed. Retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          delay *= 2; // double the delay for the next attempt
+      }
+  }
+  throw new Error('Max retries reached');
+}
+
 async function fetchMessageForToday() {
   const today = new Date().toLocaleString('en-US', { weekday: 'long' });
   const todayPrompt = weeklyPrompts[today];
@@ -92,8 +105,13 @@ async function start() {
 
   bot.command('sendmessage', async (ctx) => {
     if (ctx.chat.id === -1001925815386) { // Only allow this command for the specific chat/channel
-        const message = await fetchMessageForToday();
-        await bot.api.sendMessage(-1001874617075, message);
+        try {
+            const message = await exponentialBackoff(fetchMessageForToday, 5);
+            await bot.api.sendMessage(-1001874617075, message);
+        } catch (error) {
+            console.error('Failed to fetch the message after multiple retries.', error);
+            // You can add more handling here if needed
+        }
     }
 });
 
