@@ -140,6 +140,8 @@ async function start() {
 
   // In the bot command, capture the message text after the /win command
   bot.command('win', async (ctx) => {
+    console.log(JSON.stringify(ctx, null, 2));  // <-- Add this line to log the ctx object
+
     if (ctx.chat.id === -1001925815386) { // Only for the specified channel
         if (ctx.message && ctx.message.text) {
             const horseDetails = ctx.message.text.split('/win')[1];
