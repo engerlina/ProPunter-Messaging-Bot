@@ -68,7 +68,7 @@ async function fetchMessageForToday() {
   return response.choices[0].message.content;
 }
 
-async function announceWinningHorse() {
+async function announceWinningHorse(horseDetails) {
   const openai = new OpenAI(openaiApiKey);
   const response = await openai.chat.completions.create({
       model: "gpt-4",
@@ -79,7 +79,7 @@ async function announceWinningHorse() {
           },
           {
               "role": "user",
-              "content": "Come up with a message to announce a winning horse in 15 words or less. The details of the winning horse are:"
+              "content": `Come up with a message to announce a winning horse in 15 words or less. ${horseDetails}`
           }
       ],
       temperature: 1,
@@ -138,11 +138,13 @@ async function start() {
     }
   });
 
+  // In the bot command, capture the message text after the /win command
   bot.command('win', async (ctx) => {
-    if (ctx.chat.id === -1001925815386) { // Only for the specified channel
-        const announcement = await announceWinningHorse();
-        await ctx.reply(announcement);
-    }  
+      if (ctx.chat.id === -1001925815386) { // Only for the specified channel
+          const horseDetails = ctx.message.text.split('/win')[1]; // Get the text after the /win command
+          const announcement = await announceWinningHorse(horseDetails);
+          await ctx.reply(announcement);
+      }
   });
 
   bot.catch((err) => {
