@@ -140,11 +140,15 @@ async function start() {
 
   // In the bot command, capture the message text after the /win command
   bot.command('win', async (ctx) => {
-      if (ctx.chat.id === -1001925815386) { // Only for the specified channel
-          const horseDetails = ctx.message.text.split('/win')[1]; // Get the text after the /win command
-          const announcement = await announceWinningHorse(horseDetails);
-          await ctx.reply(announcement);
-      }
+    if (ctx.chat.id === -1001925815386) { // Only for the specified channel
+        if (ctx.message && ctx.message.text) {
+            const horseDetails = ctx.message.text.split('/win')[1];
+            const announcement = await announceWinningHorse(horseDetails);
+            await ctx.reply(announcement);
+        } else {
+            await ctx.reply("Non text message");
+        }
+    }
   });
 
   bot.catch((err) => {
