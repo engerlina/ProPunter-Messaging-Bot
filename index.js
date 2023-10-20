@@ -93,7 +93,7 @@ async function start() {
   bot.command('sendmessage', async (ctx) => {
     if (ctx.chat.id === -1001925815386) { // Only allow this command for the specific chat/channel
         const message = await fetchMessageForToday();
-        await ctx.reply(message);
+        await bot.api.sendMessage(-1001874617075, message);
     }
 });
 
@@ -132,7 +132,7 @@ async function start() {
   // Schedule the message to be sent daily at 8:30AM AEST
   const job = schedule.scheduleJob(`0 30 8 * * *`, async function() {
     const message = await fetchMessageForToday();
-    bot.api.sendMessage(-1001925815386, message);
+    bot.api.sendMessage(-1001874617075, message);
   });
 
   console.log("Starting the bot...");
