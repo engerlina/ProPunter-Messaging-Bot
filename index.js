@@ -148,8 +148,8 @@ async function start() {
         let text;
         if (ctx.message && ctx.message.text) {
             text = ctx.message.text;
-        } else if (ctx.channel_post && ctx.channel_post.text) {
-            text = ctx.channel_post.text;
+        } else if (ctx.update && ctx.update.channel_post && ctx.update.channel_post.text) {
+            text = ctx.update.channel_post.text;
         }
 
         if (text) {
@@ -179,6 +179,7 @@ async function start() {
         console.log("Not in the correct channel.");
     }
   });
+
 
   bot.catch((err) => {
     const ctx = err.ctx;
