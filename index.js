@@ -143,6 +143,9 @@ async function start() {
     console.log(JSON.stringify(ctx, null, 2));  // <-- Add this line to log the ctx object
 
     if (ctx.chat.id === -1001925815386) { // Only for the specified channel
+      console.log("CTX:", ctx);
+      console.log("CTX Message:", ctx.message);
+
         if (ctx.message && ctx.message.text) {
             const horseDetails = ctx.message.text.split('/win')[1];
             const announcement = await announceWinningHorse(horseDetails);
