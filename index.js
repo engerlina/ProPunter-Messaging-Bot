@@ -2,6 +2,7 @@ const { Bot, GrammyError, HttpError } = require("grammy");
 const { autoQuote } = require("@roziscoding/grammy-autoquote");
 const fs = require("fs");
 const path = require("path");
+const moment = require('moment-timezone');
 const schedule = require('node-schedule');
 const OpenAI = require("openai");
 
@@ -54,6 +55,13 @@ async function fetchMessageForToday() {
   return response.choices[0].message.content;
 }
 
+// This function converts 8:30AM AEST to the local time of the server
+function getLocalTimeForAEST() {
+  return moment.tz("08:30:00", "HH:mm:ss", "Australia/Sydney").tz(moment.tz.guess()).format("HH:mm:ss");
+}
+
+const timeToSend = getLocalTimeForAEST();
+
 async function start() {
   const bot = new Bot(botToken);
   bot.use(autoQuote);
@@ -81,6 +89,13 @@ async function start() {
   bot.command("start", (ctx) =>
     ctx.reply("Hello!\n\n" + "Run the /help command to see what I can do!")
   );
+
+  bot.command('sendmessage', async (ctx) => {
+    if (ctx.chat.id === -1001925815386) { // Only allow this command for the specific chat/channel
+        const message = await fetchMessageForToday();
+        await ctx.reply(message);
+    }
+});
 
   bot.catch((err) => {
     const ctx = err.ctx;
@@ -114,10 +129,10 @@ async function start() {
 //  bot.api.sendMessage(-1001925815386, 'Testing 5 mins send');
 //});
 
-  // Schedule the message to be sent daily at 8:30AM
-  const job = schedule.scheduleJob('30 8 * * *', async function() {
+  // Schedule the message to be sent daily at 8:30AM AEST
+  const job = schedule.scheduleJob(`0 30 8 * * *`, async function() {
     const message = await fetchMessageForToday();
-    bot.api.sendMessage(-1001874617075, message);
+    bot.api.sendMessage(-1001925815386, message);
   });
 
   console.log("Starting the bot...");
