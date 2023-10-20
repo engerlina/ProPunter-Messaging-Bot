@@ -138,27 +138,28 @@ async function start() {
     }
   });
 
-  // In the bot command, capture the message text after the /win command
   bot.command('win', async (ctx) => {
     console.log("Received command: /win");
-    console.log(JSON.stringify(ctx, null, 2));  // Log the entire ctx object
+    console.log(JSON.stringify(ctx, null, 2));
 
-    if (ctx.chat.id === -1001925815386) { // Only for the specified channel
+    if (ctx.chat.id === -1001925815386) {
         console.log("Inside the correct channel.");
 
-        // Check if ctx.message and ctx.message.text are defined
+        let text;
         if (ctx.message && ctx.message.text) {
-            console.log("Message exists:", ctx.message.text);
+            text = ctx.message.text;
+        } else if (ctx.channel_post && ctx.channel_post.text) {
+            text = ctx.channel_post.text;
+        }
 
-            // Check if the message contains /win before splitting
-            if (ctx.message.text.includes('/win')) {
-                const horseDetails = ctx.message.text.split('/win')[1].trim(); // Also trim to remove any leading or trailing whitespace
+        if (text) {
+            console.log("Extracted text:", text);
 
-                // Just to be safe, check if horseDetails exists and isn't just whitespace
+            if (text.includes('/win')) {
+                const horseDetails = text.split('/win')[1].trim();
                 if (horseDetails && horseDetails.length > 0) {
                     console.log("Extracted horse details:", horseDetails);
                     const announcement = await announceWinningHorse(horseDetails);
-
                     if (announcement) {
                         console.log("Announcement:", announcement);
                         await ctx.reply(announcement);
@@ -169,16 +170,15 @@ async function start() {
                     console.log("No horse details found after /win.");
                 }
             } else {
-                console.log("Message does not include /win.");
+                console.log("Text does not include /win.");
             }
         } else {
-            console.log("No message detected.");
+            console.log("No text detected.");
         }
     } else {
         console.log("Not in the correct channel.");
     }
   });
-
 
   bot.catch((err) => {
     const ctx = err.ctx;
