@@ -68,6 +68,28 @@ async function fetchMessageForToday() {
   return response.choices[0].message.content;
 }
 
+async function announceWinningHorse() {
+  const response = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+          {
+              "role": "system",
+              "content": "You are a horse racing commentator."
+          },
+          {
+              "role": "user",
+              "content": "Come up with a message to announce a winning horse in 15 words or less. The details of the winning horse are:"
+          }
+      ],
+      temperature: 1,
+      max_tokens: 256,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+  });
+  return response.choices[0].message.content;
+}
+
 // This function converts 8:30AM AEST to the local time of the server
 function getLocalTimeForAEST() {
   return moment.tz("08:30:00", "HH:mm:ss", "Australia/Sydney").tz(moment.tz.guess()).format("HH:mm:ss");
@@ -113,6 +135,13 @@ async function start() {
             // You can add more handling here if needed
         }
     }
+    
+  bot.command('win', async (ctx) => {
+    if (ctx.chat.id === -1001925815386) { // Only for the specified channel
+        const announcement = await announceWinningHorse();
+        await ctx.reply(announcement);
+    }
+    
 });
 
   bot.catch((err) => {
