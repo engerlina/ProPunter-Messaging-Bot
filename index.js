@@ -148,6 +148,8 @@ async function start() {
             const announcement = await announceWinningHorse(horseDetails);
             await ctx.reply(announcement);
         } else {
+            const horseDetails = ctx.message.text.split('/win')[1];
+            const announcement = await announceWinningHorse(horseDetails);
             await ctx.reply(announcement);
         }
     }
