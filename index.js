@@ -69,6 +69,7 @@ async function fetchMessageForToday() {
 }
 
 async function announceWinningHorse() {
+  const openai = new OpenAI(openaiApiKey);
   const response = await openai.chat.completions.create({
       model: "gpt-4",
       messages: [
@@ -136,14 +137,13 @@ async function start() {
         }
     }
   });
-  
+
   bot.command('win', async (ctx) => {
     if (ctx.chat.id === -1001925815386) { // Only for the specified channel
         const announcement = await announceWinningHorse();
         await ctx.reply(announcement);
-    }
-    
-});
+    }  
+  });
 
   bot.catch((err) => {
     const ctx = err.ctx;
