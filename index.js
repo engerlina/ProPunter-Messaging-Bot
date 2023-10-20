@@ -148,7 +148,7 @@ async function start() {
             const announcement = await announceWinningHorse(horseDetails);
             await ctx.reply(announcement);
         } else {
-            await ctx.reply("Non text message");
+            await ctx.reply(announcement);
         }
     }
   });
