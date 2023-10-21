@@ -41,9 +41,8 @@ async function exponentialBackoff(fn, maxRetries, delay = 1000) {
 }
 
 async function fetchMessageForToday() {
-  const today = new Date().toLocaleString('en-US', { weekday: 'long' });
-  const todayPrompt = weeklyPrompts[today];
-  
+  const today = moment.tz("Australia/Sydney").format('dddd');
+  const todayPrompt = weeklyPrompts[today];  
   const openai = new OpenAI(openaiApiKey);
 
   const response = await openai.chat.completions.create({
@@ -213,10 +212,9 @@ async function start() {
 //  bot.api.sendMessage(-1001925815386, 'Testing 5 mins send');
 //});
 
-  // Schedule the message to be sent daily at 8:30AM AEST
-  const job = schedule.scheduleJob(`0 30 8 * * *`, async function() {
-    const message = await fetchMessageForToday();
-    bot.api.sendMessage(-1001874617075, message);
+  const job = schedule.scheduleJob({hour: 8, minute: 30, second: 0, tz: 'Australia/Sydney'}, async function() {
+  const message = await fetchMessageForToday();
+  bot.api.sendMessage(-1001874617075, message);
   });
 
   console.log("Starting the bot...");
