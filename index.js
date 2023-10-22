@@ -18,7 +18,7 @@ if (!botToken) {
 }
 
 const weeklyPrompts = {
-  Monday: "Day 1 (Monday): Reflection & Teasers Tactic: Start the week by reflecting on the past week's results. Example Post: 🔥 Last week's bets gave our members a whopping 75% profit including bonus backs! Curious about our strategy? Check our results here: https://bit.ly/propunterresults. 📊 Stay tuned for a sneak peek of tomorrow's tips!",
+  Monday: "Day 1 (Monday): Reflection & Teasers Tactic: Start the week by reflecting on the past week's results. Example Post: 🔥 Last week's bets gave our members a whopping 75% profit including bonus backs! Curious about our strategy? Check our results here: https://bit.ly/propunterresults. 📊 Stay tuned for a sneak peek of Wednesday's tips!",
   Tuesday: "Day 2 (Tuesday): Testimonial Tuesday Tactic: Share testimonials from satisfied paid members. Example Post: 🗣️ 'Thanks to Propunter Premium, I've made consistent profits every week!' - Dave M. Galloping Gains Weekly/Champion's Monthly/Triple Crown Annual Member. Want to experience the same? Join our premium channel! 🏇🏽 Add the membership bot @ProPunter_bot and use the /subscribe command",
   Wednesday: "Day 3 (Wednesday): Big Race Day Promo Tactic: Offer a flash sale discount for new members, especially given that it's a big race day. Example Post: 🚀 WEDNESDAY FLASH SALE 🚀: Get 30% off our Champion's Choice Monthly plan for today only! Dive into today's races with expert tips! Use code: WEDRACE30 at checkout - Only for 1st time members",
   Thursday: "Day 4 (Thursday): Behind the Scenes Tactic: Share a behind-the-scenes look into how you select the tips – this builds trust and curiosity. Example Post: Ever wondered how we pick our winning horses? 🐎 We use a combination of Artificial Intelligence and a tonne of quantitative data to make our decisions in the last few minutes before every race. We believe that the flow of (smart) money often determines the race outcomes so we follow the money! ➡️ And for the full experience, join our premium channel!",
@@ -55,7 +55,7 @@ async function fetchMessageForToday() {
       },
       {
         "role": "user",
-        "content": `Create a Telegram post ONLY based on the following guidance: ${todayPrompt}`
+        "content": `Create a Telegram post ONLY based on the following guidance: ${todayPrompt} Feel free to create new content where it makes sense in line with the guidance. Don't make up statistics.`
       }
     ],
     temperature: 1,
